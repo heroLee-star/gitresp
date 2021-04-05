@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--在填写标签的时候一定要注意相关配置的顺序-->
+<configuration>
+    <!--当引入外部配置文件的时候，可以使用这样的方式，
+    resource：当前项目的类路径进行加载，如果是IDEA指的是resource资源目录下的配置文件
+    url:可以从当前文件系统的磁盘目录中查找，也可以从网络上的资源进行引入
+    -->
+    <properties resource="db.properties"></properties>
+
+    <!--可以影响mybatis运行时的行为，包含N多个属性，需要什么引入什么-->
+    <settings>
+        <!--是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn。 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!--表示在使用类实体的时候，可以不用引用全名-->
+    <typeAliases>
+        <!--每一个具体的类都需要单独来写，如果有100个类呢？是不是就很麻烦-->
+        <!--<typeAlias type="com.mashibing.bean.Emp" alias="emp"></typeAlias>-->
+        <!--可以指定具体的包来保证实体类不用写完全限定名-->
+        <package name="com.mashibing.bean"/>
+    </typeAliases>
+    <!--default 提示选择具体的环境-->
+    <environments default="development">
+        <environment id="development">
+            <!--事务管理器，每一种数据源都需要配置具体的事务管理器
+            type表示事务管理器的类型-->
+            <transactionManager type="JDBC"/>
+            <!--配置具体的数据源的类型
+            POOLED：使用数据库连接池
+            UNPOOLED：配词都打开关闭一个连接 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+    <mappers>
+        <mapper resource="EmpDao.xml"/>
+    </mappers>
+</configuration>

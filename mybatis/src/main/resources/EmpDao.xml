@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mashibing.dao.EmpDao">
+    <select id="selectEmpByEmpno" resultType="emp">
+    select * from emp where empno = #{empno} and sal > #{sal}
+    </select>
+    
+    <insert id="save">
+        insert into emp(empno,ename,job) values (#{empno},#{ename},#{job})
+    </insert>
+    
+    <update id="update">
+        update emp set sal=#{sal},ename=#{ename},job=#{job} where empno=#{empno}
+    </update>
+
+    <delete id="delete">
+        delete from emp where empno=#{empno}
+    </delete>
+
+    <select id="selectAll" resultType="emp">
+        select * from emp;
+    </select>
+
+    <select id="selectAllByParam" resultType="emp">
+        select * from emp where empno >#{empno} and sal > #{sal}
+    </select>
+
+    <select id="selectAllByMap" resultType="emp">
+        select * from emp where empno >#{empno} and sal > #{sal}
+    </select>
+
+    <!--
+    where empno=2 or 1=1
+
+    #{}：select * from emp where empno = ?
+    ${}:select * from emp where empno = 2
+
+    #{}:处理方式是使用了参数预编译的方式，不会引起SQL注入问题
+    ${}:处理方式是直接拼接SQL语句，得到的对应的sql语句，会有sql注入的风险
+    以此推荐使用#{}的方式
+
+    ${}也是有自己的使用场景的，当传入动态的表名、列名，就是最直接的拼接字符串行为
+
+    当查询语句中包含多个参数的时候，我们应该如何获取需要的参数
+    1、如果调用方法是单个参数
+        基本数据类型，可以使用#{}随便获取
+        引用数据类型，使用#{}，必须要是对象的属性名
+    2、如果调用方法是多个参数
+        需要在方法的（）中加入@Param
+
+    -->
+    <!--===================================================================-->
+
+    <resultMap id="myEmp" type="emp">
+       <!-- <id property="empno" column="empno"></id>-->
+        <result property="ename" column="ename"></result>
+        <result property="job" column="job"></result>
+        <result property="mgr" column="mgr"></result>
+
+    </resultMap>
+    <select id="selectMyEmp" resultMap="myEmp" >
+        select empno,ename,job,mgr,hiredate from emp where empno =#{empno};
+    </select>
+</mapper>

@@ -12,6 +12,7 @@ public class Emp {
     private Double sal;
     private Double comm;
     private Integer deptno;
+    private Integer study;
 
     private List list;
 
